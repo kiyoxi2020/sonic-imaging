@@ -1,52 +1,52 @@
 clear
 close all
 %% load velocity model
-load vmodel.mat % vmodel:é€Ÿåº¦æ¨¡å‹ï¼Œ x:åœ°è¡¨ç©ºé—´é‡‡æ ·ç‚¹ï¼Œzï¼šåœ°ä¸‹æ·±åº¦é‡‡æ ·ç‚¹
+load vmodel.mat % vmodel:ËÙ¶ÈÄ£ĞÍ£¬ x:µØ±í¿Õ¼ä²ÉÑùµã£¬z£ºµØÏÂÉî¶È²ÉÑùµã
 h=figure;
 imagesc(vmodel);c=colorbar;
 [z_size, x_size] = size(vmodel);
 set(gca,'XTick',[1:20:x_size]);
 set(gca,'XTickLabel',x(1:20:x_size));
-xlabel('åœ°è¡¨ä½ç½®ï¼ˆmï¼‰');
+xlabel('µØ±íÎ»ÖÃ£¨m£©');
 set(gca,'YTick',[1:20:z_size]);
 set(gca,'YTickLabel',z(1:20:z_size));
-ylabel('æ·±åº¦ï¼ˆmï¼‰');
-c.Label.String = 'é€Ÿåº¦ï¼ˆm/sï¼‰';c.Label.FontSize = 12;
-title('åœ°ä¸‹é€Ÿåº¦æ¨¡å‹');
+ylabel('Éî¶È£¨m£©');
+c.Label.String = 'ËÙ¶È£¨m/s£©';c.Label.FontSize = 12;
+title('µØÏÂËÙ¶ÈÄ£ĞÍ');
 saveas(h,'vmodel.png');
 %% wave propagation
-dx = x(2)-x(1);             % ç©ºé—´é‡‡æ ·é—´éš”ï¼ˆç±³ï¼‰
-dtstep=0.001;               % å£°æ³¢æ¥æ”¶å™¨æ¥æ”¶é‡‡æ ·ç‡ï¼ˆç§’ï¼‰
-dt=0.001;                   % æˆåƒæ•°æ®æ—¶é—´é‡‡æ ·ç‡ï¼ˆç§’ï¼‰
-tmax=1;                     % å£°æ³¢æ¥æ”¶å™¨æœ€é•¿æ¥æ”¶æ—¶é—´ï¼ˆç§’ï¼‰
-xrec=x;                     % å£°æ³¢æ¥æ”¶å™¨ä½ç½®ï¼ˆæ¨ªåæ ‡ï¼‰
-zrec=zeros(size(xrec));     % å£°æ³¢æ¥æ”¶å™¨ä½ç½®ï¼ˆçºµåæ ‡ï¼‰
-snap1=zeros(size(vmodel));  % åˆå§‹æ³¢åœºæ•°æ®ï¼Œå¯ä»¥ç†è§£ä¸ºæ—¶åˆ»0çš„æ³¢åœº
-snap1(1,length(x)/2)=1;     % å£°æ³¢å‘ç”Ÿå™¨çš„åˆå§‹æ•°æ®ï¼Œå¯ä»¥ç†è§£ä¸ºæ—¶åˆ»1çš„æ³¢åœº
-% æœ‰é™å·®åˆ†è¿‡ç¨‹
+dx = x(2)-x(1);             % ¿Õ¼ä²ÉÑù¼ä¸ô£¨Ã×£©
+dtstep=0.001;               % Éù²¨½ÓÊÕÆ÷½ÓÊÕ²ÉÑùÂÊ£¨Ãë£©
+dt=0.001;                   % ³ÉÏñÊı¾İÊ±¼ä²ÉÑùÂÊ£¨Ãë£©
+tmax=1;                     % Éù²¨½ÓÊÕÆ÷×î³¤½ÓÊÕÊ±¼ä£¨Ãë£©
+xrec=x;                     % Éù²¨½ÓÊÕÆ÷Î»ÖÃ£¨ºá×ø±ê£©
+zrec=zeros(size(xrec));     % Éù²¨½ÓÊÕÆ÷Î»ÖÃ£¨×İ×ø±ê£©
+snap1=zeros(size(vmodel));  % ³õÊ¼²¨³¡Êı¾İ£¬¿ÉÒÔÀí½âÎªÊ±¿Ì0µÄ²¨³¡
+snap1(1,length(x)/2)=1;     % Éù²¨·¢ÉúÆ÷µÄ³õÊ¼Êı¾İ£¬¿ÉÒÔÀí½âÎªÊ±¿Ì1µÄ²¨³¡
+% ÓĞÏŞ²î·Ö¹ı³Ì
 [seismogram, seis, t] = shotrec(dx, dtstep, dt, tmax, ...
     vmodel, snap1, xrec, zrec, [5,10,30,40],0);
-%% æ³¢åœºæ˜¾ç¤º
+%% ²¨³¡ÏÔÊ¾
 [t_size, x_size] = size(seismogram);
 h=figure;set(gcf,'position',[100,100,1020,520]);
 subplot(1,2,1);
 imagesc(seis,[-0.01,0.01]);colormap gray;colorbar;
 set(gca,'XTick',[1:20:x_size]);
 set(gca,'XTickLabel',x(1:10:x_size));
-xlabel('åœ°è¡¨ä½ç½®ï¼ˆmï¼‰');
+xlabel('µØ±íÎ»ÖÃ£¨m£©');
 set(gca,'YTick',[1:100:t_size]);
 set(gca,'YTickLabel',t(1:100:t_size)*1000);
-ylabel('æ—¶é—´ï¼ˆmsï¼‰');
-title('å£°æ³¢æ¥æ”¶å™¨æ¥æ”¶æ³¢åœºæ•°æ®ï¼ˆæ»¤æ³¢å‰ï¼‰');
+ylabel('Ê±¼ä£¨ms£©');
+title('Éù²¨½ÓÊÕÆ÷½ÓÊÕ²¨³¡Êı¾İ£¨ÂË²¨Ç°£©');
 subplot(1,2,2);
 imagesc(seismogram,[-0.01,0.01]);colormap gray;colorbar;
 set(gca,'XTick',[1:20:x_size]);
 set(gca,'XTickLabel',x(1:10:x_size));
-xlabel('åœ°è¡¨ä½ç½®ï¼ˆmï¼‰');
+xlabel('µØ±íÎ»ÖÃ£¨m£©');
 set(gca,'YTick',[1:100:t_size]);
 set(gca,'YTickLabel',t(1:100:t_size)*1000);
-ylabel('æ—¶é—´ï¼ˆmsï¼‰');
-title('å£°æ³¢æ¥æ”¶å™¨æ¥æ”¶æ³¢åœºæ•°æ®ï¼ˆæ»¤æ³¢åï¼‰');
+ylabel('Ê±¼ä£¨ms£©');
+title('Éù²¨½ÓÊÕÆ÷½ÓÊÕ²¨³¡Êı¾İ£¨ÂË²¨ºó£©');
 saveas(h,'seis.png');
 
 
