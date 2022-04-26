@@ -21,10 +21,15 @@ time0=clock;
 nwrite=2*round(maxstep/50)+1;
 snap2=snap1;                                            % 时间t的波场
 snap1=zeros(size(snap2));                               % 时间t-1的波场s
+% h=figure;set(gcf,'position',[100,100,1500,520]);
+% writerObj=VideoWriter('wave-propagation.avi');  %// 定义一个视频文件用来存动画
+% writerObj.FrameRate = 60;
+% open(writerObj);  
 for k=1:1:maxstep
     snap0=snap2;
     snap2=compute_snap(dx,dtstep,velocity,snap1,snap2); % 有限差分更新t+1时刻波场
     snap1=snap0;
+    pause(0.01);title([num2str(k),'/',num2str(maxstep)])
     seis(k+1,:)=snap2(irec);                            % 读取声波接收器位置的波场数据
     
     if rem(k,nwrite) == 0                               % 显示当前波场传播情况
@@ -37,7 +42,19 @@ for k=1:1:maxstep
             ' s; computation time remaining ' ...
             num2str(timeleft) ' s']);
     end
+    
+    
+%     subplot(1,2,1)
+%     imagesc(filter2d_butter(snap2,dtstep,200),[-0.05,0.05]);colormap gray;title('声场传播过程')
+%     subplot(1,2,2)
+%     seis0=imresize(seis,[round(dtstep/dt*maxstep),nrec]);
+%     imagesc(filter2d_butter(seis0,dt,50),[-0.05,0.05]);colormap gray;title('接收器接收信号')
+%     pause(0.01);
+%  A =  getframe(gcf);            %// 把图像存入视频文件中
+%  writeVideo(writerObj,A); %// 将帧写入视频
+ 
 end
+%  close(writerObj);
 
 %compute a time axis
 t=((0:size(seis,1)-1)*dtstep)';
