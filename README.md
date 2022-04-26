@@ -5,4 +5,4 @@
 
 运行main*.m
 
-具体原理见文件"Wave_Propagation.pdf"
+具体原理见文件"*.pdf"
